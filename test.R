@@ -77,3 +77,38 @@ leaflet() %>%
 
 
 
+# Some fake data
+df <- sp::SpatialPointsDataFrame(
+  cbind(
+    (runif(20) - .5) * 10 - 90.620130,  # lng
+    (runif(20) - .5) * 3.8 + 25.638077  # lat
+  ),
+  data.frame(type = factor(
+    ifelse(runif(20) > 0.75, "pirate", "ship"),
+    c("ship", "pirate")
+  ))
+)
+
+leaflet(df) %>% addTiles() %>% addCircleMarkers()
+
+# Create a palette that maps factor levels to colors
+pal <- colorFactor(c("navy", "red"), domain = c("ship", "pirate"))
+
+leaflet(df) %>% addTiles() %>%
+  addCircleMarkers(
+    radius = ~ifelse(type == "ship", 6, 10),
+    color = ~pal(type),
+    stroke = FALSE, fillOpacity = 0.5
+  )
+
+
+
+
+
+
+
+
+
+
+
+
